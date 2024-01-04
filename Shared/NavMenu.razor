@@ -1,0 +1,40 @@
+﻿<div class="bg-gray-800 text-white px-3 py-2">
+   <div class="container mx-auto">
+       <a class="text-white font-bold" href="">DocGems</a>
+       <button title="Navigation menu" class="ml-auto" @onclick="ToggleNavMenu">
+           <span class="navbar-toggler-icon"></span>
+       </button>
+   </div>
+</div>
+
+<div class="@NavMenuCssClass overflow-auto" @onclick="ToggleNavMenu">
+   <nav class="flex flex-col">
+       <div class="px-3">
+           <NavLink class="text-blue-500 hover:underline" href="" Match="NavLinkMatch.All">
+               <span class="fas fa-home" aria-hidden="true"></span> Home
+           </NavLink>
+       </div>
+       <div class="px-3">
+           <NavLink class="text-blue-500 hover:underline" href="counter">
+               <span class="fas fa-plus" aria-hidden="true"></span> Counter
+           </NavLink>
+       </div>
+       <div class="px-3">
+           <NavLink class="text-blue-500 hover:underline" href="fetchdata">
+               <span class="fas fa-database" aria-hidden="true"></span> Fetch data
+           </NavLink>
+       </div>
+   </nav>
+</div>
+
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

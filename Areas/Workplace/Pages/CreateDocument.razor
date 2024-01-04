@@ -1,0 +1,168 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _httpContextAccessor
+@using DocGems.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.CodeAnalysis
+@using Document = DocGems.Data.Document
+@inject MssqlCtx _context
+@inject UserManager<User> UserManager
+
+
+
+[Authorize]
+@page "/CreateDocument"
+
+<h3>CreateDocument</h3>
+@* <p>Welcome, @HttpContextAccessor.HttpContext.User.Identity.Name!</p> *@
+
+
+<EditForm class="max-w-md mx-auto" model="@this" OnValidSubmit="OnPostAsync">
+    <div class="relative z-0 w-full mb-5 group">
+        <InputText @bind-Value="Email" name="Email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required/>
+        <label for="Email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+    </div>
+
+    <div class="relative z-0 w-full mb-5 group">
+        <InputFile OnChange="@HandleFileChange" name="File" id="floating_file"accept=".md" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required/>
+        <label for="File" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+
+    </div>
+
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+</EditForm>
+
+@code {
+
+
+    public string Email { get; set; }
+
+
+    public IBrowserFile File { get; set; }
+    
+    public string fileContent { get; set; }
+
+    //private readonly MssqlCtx _context;
+    //private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public void OnGet()
+    {
+    }
+
+    private void HandleFileChange(InputFileChangeEventArgs e)
+    {
+        File = e.File;
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        Console.Write("here \n");
+        Console.Write(Email);
+
+        if (File != null)
+        {
+            // Convert the uploaded file to a string
+            using var reader = new StreamReader(File.OpenReadStream());
+             fileContent = await reader.ReadToEndAsync();
+
+            Console.Write(fileContent);
+        }
+
+        Console.WriteLine("**************************************************\n");
+        // Create a new document
+        var document = new Document
+        {
+            // Fill in the properties of the Document as needed
+            title = Email,
+
+            genericId = "two",
+
+            created = DateTime.UtcNow,
+
+            readCounter = 0
+        };
+
+        Console.WriteLine($"Email: {Email}, File: {File}, Context: {_context}, Accessor: {_httpContextAccessor.HttpContext.User.Identity}");
+
+
+        // Add the document to the database
+        //_context.Document.Add(document);
+        //await _context.SaveChangesAsync();
+
+        // Create a new user document
+        var userDocument = new UserDocument
+        {
+            UserId = "1c0be7de-65fb-453f-9fad-ad0a71ea6050",
+            //UserId = UserManager.GetUserId(_httpContextAccessor.HttpContext.User),
+            DocumentId = "bdc356bb-141d-4a46-b84d-0da36509a837",
+            AdditionalInfo = "nothing",
+            Content = fileContent,
+            updated = DateTime.UtcNow,
+            deprecated = false,
+            Id = "one"
+        };
+        
+        Console.WriteLine(userDocument);
+
+        @*var userDocument = new UserDocument
+       {
+           UserId = _httpContextAccessor.HttpContext.User.Identity.Name,
+           DocumentId = document.Id,
+           Content = fileContent,
+           // Fill in the other properties of the UserDocument as needed
+       };*@
+
+       // Add the user document to the database
+       _context.UserDocuments.Add(userDocument);
+       await _context.SaveChangesAsync();
+        return new RedirectToPageResult("/li");
+        
+
+        //return Redirect("/li");
+        //return Redirect .Redirect("/li");
+    }
+
+}
+
+
+@*@code {
+    [BindProperty]
+    public string Email { get; set; }
+
+    [BindProperty]
+    public IFormFile File { get; set; }
+
+    private readonly MssqlCtx _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    
+
+    public void OnGet()
+    {
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        // Convert the uploaded file to a string
+        using var reader = new StreamReader(File.OpenReadStream());
+        var fileContent = await reader.ReadToEndAsync();
+
+        // Create a new document
+        var document = new Document
+        {
+            Email = Email,
+            Content = fileContent,
+            Username = _httpContextAccessor.HttpContext.User.Identity.Name
+        };
+
+        // Add the document to the database
+        _context.Documents.Add(document);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Success");
+    }
+}*@

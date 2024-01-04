@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>DocGems</PageTitle>
+
+<div class="flex">
+   <div class="w-1/4">
+       <NavMenu/>
+   </div>
+
+   <main class="w-3/4">
+       <div class="px-4">
+           <a href="https://docs.microsoft.com/aspnet/" target="_blank" class="text-blue-500 hover:underline">About</a>
+       </div>
+
+       <article class="px-4 bg-red-900">
+           @Body
+       </article>
+   </main>
+</div>

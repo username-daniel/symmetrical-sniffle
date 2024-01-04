@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/elite/Workplace/micro/efusion-docs/DocGems/obj/Debug/net8.0/scopedcss/projectbundle/DocGems.bundle.scp.css",
+      "PackagePath": "staticwebassets/DocGems.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/elite/Workplace/micro/efusion-docs/DocGems/wwwroot/css/app.css",
+      "PackagePath": "staticwebassets/css/app.css"
+    },
+    {
+      "Id": "/Users/elite/Workplace/micro/efusion-docs/DocGems/wwwroot/css/app.min.css",
+      "PackagePath": "staticwebassets/css/app.min.css"
+    },
+    {
+      "Id": "/Users/elite/Workplace/micro/efusion-docs/DocGems/wwwroot/css/site.css",
+      "PackagePath": "staticwebassets/css/site.css"
+    },
+    {
+      "Id": "/Users/elite/Workplace/micro/efusion-docs/DocGems/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.DocGems.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.DocGems.props",
+      "PackagePath": "build\\DocGems.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.DocGems.props",
+      "PackagePath": "buildMultiTargeting\\DocGems.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.DocGems.props",
+      "PackagePath": "buildTransitive\\DocGems.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
